@@ -4,12 +4,15 @@
 // Refer to the Cheerio docs here on how to parse HTML: https://cheerio.js.org/docs/basics/loading
 // Refer to Puppeteer docs here: https://pptr.dev/guides/what-is-puppeteer
 
+// nextjs creaates routes based on file structure
+// for the webhook: /api/chat, create a route.ts file under ./api/chat
+import { NextResponse } from "next/server";
+import { getCompletion } from "@/app/utils/groqClient";
+
 export async function POST(req: Request) {
   try {
-
-
-  } catch (error) {
-
-
-  }
+    const data = await req.json();
+    const response = await getCompletion(data.message);
+    return NextResponse.json({ message: response });
+  } catch (error) {}
 }
