@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type Message = {
-  role: "user" | "ai";
+  role: "user" | "assistant";
   content: string;
 };
 
@@ -29,11 +29,14 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ messages }),
       });
 
       const reply = await response.json();
-      setMessages(msgs => [...msgs, { role: "ai", content: reply.message }]);
+      setMessages(msgs => [
+        ...msgs,
+        { role: "assistant", content: reply.message },
+      ]);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -59,14 +62,14 @@ export default function Home() {
             <div
               key={index}
               className={`flex gap-4 mb-4 ${
-                msg.role === "ai"
+                msg.role === "assistant"
                   ? "justify-start"
                   : "justify-end flex-row-reverse"
               }`}
             >
               <div
                 className={`px-4 py-2 rounded-2xl max-w-[80%] ${
-                  msg.role === "ai"
+                  msg.role === "assistant"
                     ? "bg-gray-800 border border-gray-700 text-gray-100"
                     : "bg-cyan-600 text-white ml-auto"
                 }`}
